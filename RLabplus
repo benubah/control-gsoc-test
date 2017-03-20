@@ -1,0 +1,33 @@
+//Demonstrating knowledge of Rlabplus
+// Simple code to check appropriate dimensions of input arguments, perform schur decomposition and returning a result
+
+simple = function(x,y,z){
+  report = "";
+    
+    //check for number of input arguments
+   if (nargs == 3) {
+      
+           if (z.nc != y.nc) {
+               report="X and y matrices do not have the same columns size.";
+           }
+      
+   } else{
+   error("Arguments must be three in number!");
+   }
+  
+  // check if the x matrix is square
+        if (x.nr != x.nc) {
+       report="X  must be square";
+   }
+   
+   //perform a schur decomposition on the x matrix
+   res = schur(x)
+   q = res.z;
+  t = res.t; 
+ 
+ //row bind y and z
+ b = [y;z];
+ 
+
+   return <<q=q; t=t; b=b>>;
+};
