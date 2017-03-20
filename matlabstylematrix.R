@@ -1,4 +1,7 @@
-# matlab style matrix creation function
+# Easy: number 1
+
+
+# code for matlab style matrix creation function
 #syntax is c(2,3,4) %;% c(2,2,2) %;% c(2,3,3)
 #output is
 #      [,1] [,2] [,3]
