@@ -1,5 +1,5 @@
 # Easy: number 1
-
+# Demonstrate knowledge of R programming
 
 # code for matlab style matrix creation function
 #syntax is c(2,3,4) %;% c(2,2,2) %;% c(2,3,3)
