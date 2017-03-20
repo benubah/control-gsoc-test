@@ -1,3 +1,15 @@
+# Medium Test number 2
+
+#Matlab used are(A,B,C) in the early nineties, but currently uses the more robust care() function for solving the algebraic riccati
+#equation using the following syntax: [X,L,G] = care(A,B,Q) while rlabplus and the following R implementation uses the syntax:
+# X = are(A,B,C)
+
+# A , B, and C are all matrices
+
+
+
+
+
 #--------------------------------------------------------------------------
   #
   # are
@@ -13,9 +25,7 @@
   # assuming B is symmetric and nonnegative definite and C is
   # symmetric.
   #
-  # see also: ric
-  #--------------------------------------------------------------------------
- # require schord
+ 
   library(Matrix) #schur
   
   #Only bug - The Schur function from the matrix package returns incomplete results. Coerces imaginary parts of the matrix
@@ -88,14 +98,13 @@ return(X)
   }
 
 
-#----------------------------------------------------------------------
-  #
+#-REQUIRED BY are.R
   # schord
 #
   # Syntax: </Qo; To/> = schord(Qi, Ti, index)
   #
     #	Ordered schur decomposition.
-  #	</Qo; To/> = schord(Qi, Ti, index)  Given the square (possibly 
+  #	result = schord(Qi, Ti, index)  Given the square (possibly 
                                                            #	complex) upper-triangular matrix Ti and orthogonal matrix Qi
   #	(as output, for example, from the function SCHUR),
   #	SCHORD finds an orthogonal matrix Q so that the eigenvalues
@@ -113,7 +122,7 @@ return(X)
       #          *** WARNING: SCHORD will not reorder REAL Schur forms.
     #
       #----------------------------------------------------------------------
-     # require givens
+     # 
     
     
     
@@ -167,5 +176,56 @@ return(X)
         }
                   return(list(Qo=Qo, To=To));
     }
+
+#-REQUIRED BY schord.R-----------------------------------------------------
+  #
+  # givens
+#
+  # syntax: g = givens(x,y)
+  #      Givens rotation matrix.
+  #	G = givens(x,y) returns the complex Givens rotation matrix
+  #
+    #	    | c       s |                  | x |     | r | 
+    #	G = |           |   such that  G * |   |  =  |   |
+      #          |-conj(s) c |                  | y |     | 0 |
+      #	                                
+      #	where c is real, s is complex, and c^2 + |s|^2 = 1. 
+      #
+        #----------------------------------------------------------------------
+        givens = function(x,y)
+        {
+          absx = abs(x);
+          if (absx == 0.0)
+          {
+            c = 0.0; s = 1.0;
+           } else{
+              nrm = norm(cbind(x,y),"2");
+            c = absx/nrm;
+            s = x/absx*(Conj(y)/nrm);
+           }
+          val = rbind(cbind(c,s), cbind(-Conj(s),c));
+          return(val);
+        }
+        
                   
-                  
+          # The are(A,B,C) program could be tested using the following R program below:
+a = matrix(c(-3, 2,1, 1), byrow = TRUE, ncol = 2)
+b = matrix(c(0, 1, 1,0), nrow = 2) # must be dimensioned as matrix a
+c = matrix(c(1, -1), ncol=2)
+
+d=t(c)%*%c
+
+result = are(a,b,d);
+# The results are:
+#          [,1]       [,2]
+# [1,] 0.1207372  0.5418715
+# [2,] 2.2672471 25.6464088
+
+# The results differ with the results in Octave for the same are(A,B,C) program due to the schur limitation in R
+
+#Octave results:
+# X =
+
+#   0.42999   1.38591
+#   1.38591   8.47814
+
