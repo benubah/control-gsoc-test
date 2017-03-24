@@ -4,6 +4,8 @@ demand to maintain the frequency and voltage magnitude within specified limits s
 
 The diagram of Fig.1 is the schematic representation of the automatic voltage regulator and frequency control of a 
 generator.
+![alt text](https://github.com/benubah/control-gsoc-test/blob/master/Fig1_powersystem%20_schematicdiagram.png "Figure 1")
+Figure 1
 
 
 The primary step in the design and analysis of such a control system is its mathematical model with two most common
@@ -14,12 +16,18 @@ The state space approach is more robust and could be applied to analyze linear a
 A part of Fig.1 consisting of the Speed Governor, Steam Turbine and Load is modeled using control theory in Fig. 2
 The values for the unknowns could be obtained from a power system data sheet.
 
+![alt text](https://github.com/benubah/control-gsoc-test/blob/master/Fig2blockmodel.png "Figure 2")
+Figure 2 
+
+
 Using control theory to analyze the closed loop transfer function of Fig.2 results in:
 Applying the following values:
 Governor Time constant, Tg = 0.2 sec
 Turbine Time constant, Tt = 0.5 sec
 Governor inertia constant, H = 5 sec
 Governor speed regulation, R = 0.05 per unit
+
+![alt text](https://github.com/benubah/control-gsoc-test/blob/master/tf.png "Figure 2")
 
 Problem:
 To obtain the frequency and power deviation response due to a step change (0.2 per unit) in consumer load connected to this
@@ -34,3 +42,5 @@ is still under development to be installable on a variety of operating systems (
 For a more visual and interactive analysis, and ease of use, the Shiny package was used to deploy the solution as a web application
 
 A screenshot is shown below in Fig. 3
+![alt text](https://github.com/benubah/control-gsoc-test/blob/master/Fig3.png "Figure 3")
+Figure 3
