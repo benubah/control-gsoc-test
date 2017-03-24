@@ -52,3 +52,13 @@ For a more visual and interactive analysis, and ease of use, the Shiny package w
 A screenshot is shown below in Fig. 3
 ![alt text](https://github.com/benubah/control-gsoc-test/blob/master/Fig3.png "Figure 3")
 ### Figure 3
+
+## Results
+
+Due to the step change (of 0.2 per unit) in consumer load, the frequency of the power system experienced a deviation of about 1 Hz and finally stabilized at around 0.1 Hz (considering a power system operating at a nominal frequency of 60Hz it would be deviation of about 59Hz and a new stable operating frequency of 59.9Hz)
+
+[See one similar way Mitsubishi Electric uses control theory here](http://www.meppi.com/Products/GeneratorExcitationProducts/Static%20Excitation%20System/Power%20System%20Stabilizer.pdf)
+
+## References
+
+[1] Hadi Saadat, Power System Analysis, Tata McGraw Hill, New Delhi, 1999
