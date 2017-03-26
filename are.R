@@ -1,101 +1,90 @@
 # Medium Test number 2
-
-#Matlab used are(A,B,C) in the early nineties, but currently uses the more robust care() function for solving the algebraic riccati
-#equation using the following syntax: [X,L,G] = care(A,B,Q) while rlabplus and the following R implementation uses the syntax:
 # X = are(A,B,C)
-
 # A , B, and C are all matrices
-
-
-
-
-
-#--------------------------------------------------------------------------
-  #
-  # are
-#
-  # Syntax: X = are(A,B,C)
-  #
-    # Algebraic Riccati Equation solution.
-  # X = are(A, B, C) returns the stablizing solution (if it
-                                                       # exists) to the continuous-time Riccati equation:
-    #
-    #        A'*X + X*A - X*B*X + C = 0
-  #
-  # assuming B is symmetric and nonnegative definite and C is
-  # symmetric.
-  #
+# Syntax: X = are(A,B,C)
+# Algebraic Riccati Equation solution.
+# X = are(A, B, C) returns the stablizing solution (if it
+# exists) to the continuous-time Riccati equation:
+#        A'*X + X*A - X*B*X + C = 0
+# assuming B is symmetric and nonnegative definite and C is
+# symmetric.
+library(Matrix) 
+are = function(A,B,C) {
+  
+      eps = .Machine$double.eps
+  
+      # check for correct input problem
+      nr = nrow(A)
+      nc = ncol(A) 
+      n  = nr;
+        
+      if (nr != nc) {
+              stop("Nonsquare A matrix")
+      }
+      
+      nr = nrow(B)
+      nc = ncol(B)
+  
+      if (nr!=n || nc!=n) {
+              stop("Incorrectly dimensioned B matrix") 
+       }
+  
+      nr = nrow(C)
+      nc = ncol(C)
+  
+      if (nr!=n || nc!=n) {
+             stop("Incorrectly dimensioned C matrix") 
+      }
+  
+      var1= rbind(cbind(A,-B), cbind(-C, t(-A)))
+  
+  
+      val= var1*(1.0+(eps*eps)*sqrt(as.complex(-1)))
  
-  library(Matrix) #schur
+      tmp = Schur(val)    
   
-  #Only bug - The Schur function from the matrix package returns incomplete results. Coerces imaginary parts of the matrix
-  
-  
-  are = function(A,B,C)
-  {
-  
-  eps = .Machine$double.eps;
-  # check for correct input problem
-  nr = nrow(A);
-  nc = ncol(A); 
-  n  = nr;
-  if (nr != nc) {
-  stop("Nonsquare A matrix"); 
-  }
-  nr = nrow(B);
-  nc = ncol(B);
-  if (nr!=n || nc!=n) {
-  #stop("Incorrectly dimensioned B matrix"); 
-  }
-  nr = nrow(C);
-  nc = ncol(C);
-  if (nr!=n || nc!=n) {
-   stop("Incorrectly dimensioned C matrix"); 
-  }
-  
-  var1= rbind(cbind(A,-B), cbind(-C, t(-A)));
-  #print(var1)
-  val=var1*(1.0+eps*eps*sqrt(as.complex(-1)));
- # print(val)
-  tmp = Schur(val);    # This function from the matrix package returns incomplete results. Coerces imaginary parts of the matrix
- # print(tmp)
-q = as.matrix(tmp$Q);
-t = as.matrix(tmp$T); 
-tol = 10.0*eps*max(abs(diag(t)));	# ad hoc tolerance
-#print(tol)
-ns = 0;
-#
+      q = as.matrix(tmp$Q)
+      t = as.matrix(tmp$T) 
+      tol = 10.0*eps*max(abs(diag(t)))	# ad hoc tolerance
+
+      ns = 0
+
   #  Prepare an array called index to send message to ordering routine 
 #  giving location of eigenvalues with respect to the imaginary axis.
 #  -1  denotes open left-half-plane
 #   1  denotes open right-half-plane
 #   0  denotes within tol of imaginary axis
 #  
-  index = c();
-for (i in 1:(2*n))
-{
-  if (Re(t[i,i]) < -tol) {
-    index = cbind(index, -1) ;
-    ns = ns + 1;
-    }else if (Re(t[i,i]) > tol) {
-      index = cbind(index, 1) ;
-      }else{
-        index = cbind(index, 0) ;
+      index = c()
+
+    for (i in 1:(2*n)){
+      
+        if (Re(t[i,i]) < -tol) {
+          
+                index = cbind(index, -1)
+                ns = ns + 1
+                
+        } else if (Re(t[i,i]) > tol) {
+     
+                index = cbind(index, 1)
+        } else {
+                index = cbind(index, 0)
+        }
+  }
+
+      if (ns != n) {
+              stop("No solution: (A,B) may be uncontrollable or no solution exists"); 
       }
-  }
 
-if (ns != n) {
-  stop("No solution: (A,B) may be uncontrollable or no solution exists"); 
-}
   
-  res = schord(q,t,index);
-  qo= res$Qo
-  to= res$To
+      res = schord(q,t,index);
+      qo= res$Qo
+      to= res$To
 
-X = Re(qo[(n+1):(n+n),1:n]/q[1:n,1:n]);
+      X = Re(qo[(n+1):(n+n),1:n]) %*% solve(Re(qo[1:n,1:n]));
 
-return(X)
-  }
+      return(X)
+ }
 
 
 #-REQUIRED BY are.R
@@ -120,13 +109,6 @@ return(X)
     #     	If Qi is not given it is set to the identity matrix.
     #
       #          *** WARNING: SCHORD will not reorder REAL Schur forms.
-    #
-      #----------------------------------------------------------------------
-     # 
-    
-    
-    
-    #
     schord = function(Qi, Ti, index)
     {
       n = nrow(Ti);
@@ -178,9 +160,7 @@ return(X)
     }
 
 #-REQUIRED BY schord.R-----------------------------------------------------
-  #
   # givens
-#
   # syntax: g = givens(x,y)
   #      Givens rotation matrix.
   #	G = givens(x,y) returns the complex Givens rotation matrix
@@ -190,8 +170,7 @@ return(X)
       #          |-conj(s) c |                  | y |     | 0 |
       #	                                
       #	where c is real, s is complex, and c^2 + |s|^2 = 1. 
-      #
-        #----------------------------------------------------------------------
+ #----------------------------------------------------------------------
         givens = function(x,y)
         {
           absx = abs(x);
@@ -208,7 +187,7 @@ return(X)
         }
         
                   
-          # The are(A,B,C) program could be tested using the following R program below:
+# The are(A,B,C) program could be tested using the following R code below:
 a = matrix(c(-3, 2,1, 1), byrow = TRUE, ncol = 2)
 b = matrix(c(0, 1, 1,0), nrow = 2) # must be dimensioned as matrix a
 c = matrix(c(1, -1), ncol=2)
@@ -216,12 +195,13 @@ c = matrix(c(1, -1), ncol=2)
 d=t(c)%*%c
 
 result = are(a,b,d);
-# The results are:
-#          [,1]       [,2]
-# [1,] 0.1207372  0.5418715
-# [2,] 2.2672471 25.6464088
+# The result is:
+# > result
+#          [,1]     [,2]
+#[1,] 0.4299933 1.385913
+#[2,] 1.3859133 8.478139
 
-# The results differ with the results in Octave for the same are(A,B,C) program due to the schur limitation in R
+# The result is identical with that of Octave below
 
 #Octave results:
 # X =
