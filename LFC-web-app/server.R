@@ -81,7 +81,7 @@ shinyServer(function(input, output) {
     
     if(bd){
     o_source(text = " sys = tf(num,den); bode(sys); print('figure_1.png','-dpng','-S850,420')")
-               filename <- normalizePath(file.path('/home/rpowerlabs/PSAT_S/control-gsoc-test',
+               filename <- normalizePath(file.path('/home/path/to/your-project-folder',
                                                        paste('figure_1', '.png', sep='')))
           list(src = filename)
       }
