@@ -208,4 +208,8 @@ result = are(a,b,d);
 
 #   0.42999   1.38591
 #   1.38591   8.47814
-
+#
+# In R and RLabPlus, the input and output objects are the same.
+# However, MATLAB had this same input and output objects as R and RLabPlus, 
+# but in recent times, MATLAB remodified the function to be [X,L,G] = care(A,B,Q) with more
+# outputs L and G. Where G = gain matrix and L = vector of closed-loop eigenvalues
