@@ -59,6 +59,10 @@ Due to the step change (of 0.2 per unit) in consumer load, the frequency of the 
 
 [See one similar way Mitsubishi Electric uses control theory here](http://www.meppi.com/Products/GeneratorExcitationProducts/Static%20Excitation%20System/Power%20System%20Stabilizer.pdf)
 
+## Code
+
+The code for this application can be found [here](https://github.com/benubah/control-gsoc-test/tree/LFC-web-app/LFC-web-app)
+
 ## References
 
 [1] Hadi Saadat, Power System Analysis, Tata McGraw Hill, New Delhi, 1999
