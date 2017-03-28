@@ -13,6 +13,7 @@ knitr is used to compile an R Markdown document into pure Markdown, converting R
 
 This involves putting the R Markdown document within a subdirectory called 'vignettes', specifying that the Vignetter builder is knitr in the DESCRIPTION file. Also, at the header of the R Markdown file specify these:
 
+```R
 ---
 title: "Control toolbox"
 output: pdf_document
@@ -21,7 +22,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
+```
 Then build your vignette with the devtools::build_vignettes() function. The built vignette would be located in the inst/doc folder.
 
 
